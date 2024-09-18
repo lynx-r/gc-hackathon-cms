@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: strapi_container
+    image: postgres:16
+    environment:
+      POSTGRES_DB: "redbook-cms"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+    ports:
+      - "5432:5432"
+    volumes:
+      - strapi-data:/var/lib/postgresql/data
+    networks:
+      - postgres
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:8
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@example.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1G
+    networks:
+      - postgres
+
+volumes:
+  strapi-data:
+  pgadmin-data:
+
+networks:
+  postgres:
+    driver: bridge

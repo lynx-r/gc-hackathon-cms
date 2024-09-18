@@ -4,7 +4,7 @@ services:
     container_name: strapi_container
     image: postgres:16
     environment:
-      POSTGRES_DB: "redbook-cms"
+      POSTGRES_DB: "redbookcms"
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "admin"
     ports:

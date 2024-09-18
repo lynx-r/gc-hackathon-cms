@@ -6,9 +6,9 @@ meta:
 build:
   skip: false
   artifacts:
-    "*": /
+    "dist/*": /dist
   additionalCommands: NODE_ENV=production npm run build
 run:
-  command: NODE_ENV=production npm run start
+  command: NODE_ENV=production node server.js
   persistenceMount: /data
   containerPort: "1337"

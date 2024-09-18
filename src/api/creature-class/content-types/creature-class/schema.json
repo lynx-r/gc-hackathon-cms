@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "creature_classes",
+  "info": {
+    "singularName": "creature-class",
+    "pluralName": "creature-classes",
+    "displayName": "Класс",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "uid": {
+      "type": "uid",
+      "required": true,
+      "targetField": "name"
+    },
+    "otryads": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ordo.ordo",
+      "mappedBy": "klass"
+    }
+  }
+}

@@ -362,41 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiAnimalAnimal extends Schema.CollectionType {
-  collectionName: 'animals';
-  info: {
-    singularName: 'animal';
-    pluralName: 'animals';
-    displayName: '\u0416\u0438\u0432\u043E\u0442\u043D\u043E\u0435';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.DefaultTo<'name'>;
-    description: Attribute.String;
-    location: Attribute.JSON;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::animal.animal',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::animal.animal',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -823,6 +788,160 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
+export interface ApiAnimalAnimal extends Schema.CollectionType {
+  collectionName: 'animals';
+  info: {
+    singularName: 'animal';
+    pluralName: 'animals';
+    displayName: '\u0416\u0438\u0432\u043E\u0442\u043D\u043E\u0435';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required & Attribute.DefaultTo<'name'>;
+    description: Attribute.Text;
+    location: Attribute.JSON;
+    photo: Attribute.Media<'images'>;
+    uid: Attribute.UID<'api::animal.animal', 'name'> & Attribute.Required;
+    semejstvo: Attribute.Relation<
+      'api::animal.animal',
+      'manyToOne',
+      'api::familia.familia'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::animal.animal',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::animal.animal',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCreatureClassCreatureClass extends Schema.CollectionType {
+  collectionName: 'creature_classes';
+  info: {
+    singularName: 'creature-class';
+    pluralName: 'creature-classes';
+    displayName: '\u041A\u043B\u0430\u0441\u0441';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    uid: Attribute.UID<'api::creature-class.creature-class', 'name'> &
+      Attribute.Required;
+    otryads: Attribute.Relation<
+      'api::creature-class.creature-class',
+      'oneToMany',
+      'api::ordo.ordo'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::creature-class.creature-class',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::creature-class.creature-class',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFamiliaFamilia extends Schema.CollectionType {
+  collectionName: 'familias';
+  info: {
+    singularName: 'familia';
+    pluralName: 'familias';
+    displayName: '\u0421\u0435\u043C\u0435\u0439\u0441\u0442\u0432\u043E';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    otryad: Attribute.Relation<
+      'api::familia.familia',
+      'manyToOne',
+      'api::ordo.ordo'
+    >;
+    uid: Attribute.UID<'api::familia.familia', 'name'> & Attribute.Required;
+    zhivotnoes: Attribute.Relation<
+      'api::familia.familia',
+      'oneToMany',
+      'api::animal.animal'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::familia.familia',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::familia.familia',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiOrdoOrdo extends Schema.CollectionType {
+  collectionName: 'ordos';
+  info: {
+    singularName: 'ordo';
+    pluralName: 'ordos';
+    displayName: '\u041E\u0442\u0440\u044F\u0434';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    uid: Attribute.UID<'api::ordo.ordo', 'name'> & Attribute.Required;
+    klass: Attribute.Relation<
+      'api::ordo.ordo',
+      'manyToOne',
+      'api::creature-class.creature-class'
+    >;
+    familias: Attribute.Relation<
+      'api::ordo.ordo',
+      'oneToMany',
+      'api::familia.familia'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::ordo.ordo', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::ordo.ordo', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -833,7 +952,6 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::animal.animal': ApiAnimalAnimal;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -842,6 +960,10 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::animal.animal': ApiAnimalAnimal;
+      'api::creature-class.creature-class': ApiCreatureClassCreatureClass;
+      'api::familia.familia': ApiFamiliaFamilia;
+      'api::ordo.ordo': ApiOrdoOrdo;
     }
   }
 }

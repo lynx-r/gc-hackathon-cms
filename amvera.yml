@@ -1,12 +1,14 @@
----
 meta:
   environment: node
   toolchain:
     name: npm
     version: "20"
 build:
+  skip: false
+  artifacts:
+    "*": /
   additionalCommands: NODE_ENV=production npm run build
 run:
   command: NODE_ENV=production npm run start
   persistenceMount: /data
-  containerPort: 1337
+  containerPort: "1337"

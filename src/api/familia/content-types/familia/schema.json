@@ -1,0 +1,38 @@
+{
+    "kind": "collectionType",
+    "collectionName": "familias",
+    "info": {
+        "singularName": "familia",
+        "pluralName": "familias",
+        "displayName": "Семейство",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "name": {
+            "type": "string",
+            "required": true,
+            "unique": true
+        },
+        "otryad": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::ordo.ordo",
+            "inversedBy": "familias"
+        },
+        "uid": {
+            "type": "uid",
+            "targetField": "name",
+            "required": true
+        },
+        "zhivotnoes": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::animal.animal",
+            "mappedBy": "semejstvo"
+        }
+    }
+}

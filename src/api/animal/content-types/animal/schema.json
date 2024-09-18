@@ -4,7 +4,8 @@
     "info": {
         "singularName": "animal",
         "pluralName": "animals",
-        "displayName": "Животное"
+        "displayName": "Животное",
+        "description": ""
     },
     "options": {
         "draftAndPublish": true
@@ -15,14 +16,33 @@
             "type": "string",
             "default": "name",
             "required": true,
-            "unique": true
+            "unique": false
         },
         "description": {
-            "type": "string",
+            "type": "text",
             "required": false
         },
         "location": {
             "type": "json"
+        },
+        "photo": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "uid": {
+            "type": "uid",
+            "required": true,
+            "targetField": "name"
+        },
+        "semejstvo": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::familia.familia",
+            "inversedBy": "zhivotnoes"
         }
     }
 }

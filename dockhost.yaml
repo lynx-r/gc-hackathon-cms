@@ -1,0 +1,136 @@
+version: 1
+project: redbook
+
+timezone: UTC
+
+environment:
+  variables:
+    NODE_ENV: production
+
+    HOST: "0.0.0.0"
+    PORT: "1337"
+    APP_KEYS: "toBeModified1,toBeModified2"
+    API_TOKEN_SALT: tobemodified
+    ADMIN_JWT_SECRET: tobemodified
+    TRANSFER_TOKEN_SALT: tobemodified
+    JWT_SECRET: tobemodified
+
+    DATABASE_HOST: postgres
+    DATABASE_PORT: "5432"
+    DATABASE_NAME: redbookdb
+    DATABASE_USERNAME: admin
+    DATABASE_PASSWORD: admin
+    DATABASE_CLIENT: postgres
+
+volumes:
+  db-data:
+    type: ssd # Тип диска, ssd или hdd
+    size: 1Gib # Размер диска, минимальный размер 1Gib
+
+repository:
+  frontend:
+    name: frontend
+    url: https://github.com/lynx-r/gc-hackathon-redbook-frontend.git
+    branch: main
+    # ports:
+    # - 80
+
+    # username: lynx-r
+    # password: ${GITHUB_PASSWORD}
+    # cpu: 1
+    # cpuFraction: 5
+    # memory: 256MiB
+    # dockerFile: Dockerfile
+    # dockerContext: .
+
+containers:
+  cms:
+    image: workingbit/gc-hackathon-redbook-cms:latest
+    replicas: 1 # Количество реплик
+
+    resources:
+      memory: 512MiB # Оперативная память (RAM), минимальный размер 64MiB
+      cpu: 1 # Количество CPU, минимально 1
+      cpuFraction: 20 # % резерва, 5,10,20,50,80,100. Минимальное значение 5
+
+    variables:
+      APP_KEYS: $APP_KEYS
+      API_TOKEN_SALT: $API_TOKEN_SALT
+      TRANSFER_TOKEN_SALT: $TRANSFER_TOKEN_SALT
+      JWT_SECRET: $JWT_SECRET
+      ADMIN_JWT_SECRET: $ADMIN_JWT_SECRET
+      DATABASE_PASSWORD: $DATABASE_PASSWORD
+      NODE_ENV: $NODE_ENV
+
+      DATABASE_CLIENT: $DATABASE_CLIENT
+      DATABASE_HOST: $DATABASE_HOST
+      DATABASE_NAME: $DATABASE_NAME
+      DATABASE_USERNAME: $DATABASE_USERNAME
+      DATABASE_PORT: $DATABASE_PORT
+
+    ports:
+      - 1337
+      - 5432
+
+  postgres:
+    image: postgres:16
+    replicas: 1 # Количество реплик
+
+    resources:
+      memory: 256MiB # Оперативная память (RAM), минимальный размер 64MiB
+      cpu: 1 # Количество CPU, минимально 1
+      cpuFraction: 50 # % резерва, 5,10,20,50,80,100. Минимальное значение 5
+
+    variables:
+      POSTGRES_USER: $DATABASE_USERNAME
+      POSTGRES_PASSWORD: $DATABASE_PASSWORD
+      POSTGRES_DB: $DATABASE_NAME
+    ports:
+      - 5432
+    volumes: # Опционально, список дисков, смонтированных в контейнер
+      - name: db-data # Имя диска
+        mountPath: /var/lib/postgresql/data/ # Путь монтирования диска внутри контейнера
+
+# Раздел сетевых сервисов
+network:
+  # Раздел конфигурации доменов
+  domains:
+    frontend: ~ # Динамический домен
+    cms: ~ # Динамический домен
+    www: ~
+
+  # # Раздел конфигурации сервисов
+  services:
+    db-net: # Имя сервиса
+      container:
+        - cms
+        - postgres
+      ports: # Список открытых в контейнере портов
+        - 5432
+
+  #   cms: # Имя сервиса
+  #     container: # Список контейнеров, на которые будет маршрутизироваться трафик
+  #       - postgres
+  #     ports: # Список открытых в контейнерах портов
+  #       - 5432
+
+  # Раздел конфигурации маршрутов
+  routes:
+    cms: # Имя маршрута
+      domain: cms # Имя домена
+      service: cms # Имя сервиса
+      port: 1337 # Порт сервиса
+      path: / # Опционально, путь маршрутизации URL, по умолчанию - /
+
+
+    # frontend: # Имя маршрута
+    #   domain: frontend # Имя домена
+    #   service: frontend # Имя сервиса
+    #   port: 80 # Порт сервиса
+    #   path: / # Опционально, путь маршрутизации URL, по умолчанию - /
+
+  # # Раздел конфигурации портов
+  # ports:
+  #     port_1:                                     # Имя порта
+  #         service: service_1                      # Имя сервиса
+  #         port: 80

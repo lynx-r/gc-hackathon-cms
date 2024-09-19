@@ -3,14 +3,14 @@ services:
   frontend:
     container_name: gcm-redbook-ultra-frt
     build:
-      context: ../gc-hackathon-redbook-frontend
+      context: ../myrepasitory
     ports:
       - "8081:80"
     networks:
       - gcm-redbook-ultra
 
   gcm-redbook-ultra-cms:
-    container_name: gcm-redbook-ultra-cms
+    container_name: workingbit/gcm-redbook-ultra-cms
     build: .
     image: gcm-redbook-ultra-cms:latest
     restart: unless-stopped

@@ -1,43 +1,82 @@
-version: "3.9"
+version: "3"
 services:
-  postgres:
-    container_name: strapi_container
-    image: postgres:16
+  frontend:
+    container_name: gcm-redbook-ultra-frt
+    build:
+      context: ../redbook-frontend
+    ports:
+      - "8081:80"
+    networks:
+      - gcm-redbook-ultra
+
+  gcm-redbook-ultra-cms:
+    container_name: gcm-redbook-ultra-cms
+    build: .
+    image: gcm-redbook-ultra-cms:latest
+    restart: unless-stopped
+    env_file: .env
     environment:
-      POSTGRES_DB: "redbookcms"
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "admin"
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: gcm-redbook-ultraDB
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PORT: ${DATABASE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      NODE_ENV: ${NODE_ENV}
+    volumes:
+      - ./config:/opt/app/config
+      - ./src:/opt/app/src
+      - ./package.json:/opt/package.json
+      - ./package-lock.json:/opt/package-lock.json
+
+      - ./.env:/opt/app/.env
+      - ./public/uploads:/opt/app/public/uploads
+    ports:
+      - "1337:1337"
+    networks:
+      - gcm-redbook-ultra
+    depends_on:
+      - frontend
+      - gcm-redbook-ultraDB
+
+  gcm-redbook-ultraDB:
+    container_name: gcm-redbook-ultraDB
+    platform: linux/amd64 #for platform error on Apple M1 chips
+    restart: unless-stopped
+    env_file: .env
+    image: postgres:14.5-alpine
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - gcm-redbook-ultra-data:/var/lib/postgresql/data/ #using a volume
+      #- ./data:/var/lib/postgresql/data/ # if you want to use a bind folder
+
     ports:
       - "5432:5432"
-    volumes:
-      - strapi-data:/var/lib/postgresql/data
     networks:
-      - postgres
+      - gcm-redbook-ultra
 
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4:8
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@example.com"
-      PGADMIN_DEFAULT_PASSWORD: "admin"
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
-    ports:
-      - "5050:80"
+  gcm-redbook-ultraAdminer:
+    container_name: gcm-redbook-ultraAdminer
+    image: adminer
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 1G
+    ports:
+      - "9090:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=gcm-redbook-ultraDB
     networks:
-      - postgres
+      - gcm-redbook-ultra
+    depends_on:
+      - gcm-redbook-ultraDB
 
 volumes:
-  strapi-data:
-  pgadmin-data:
+  gcm-redbook-ultra-data:
 
 networks:
-  postgres:
+  gcm-redbook-ultra:
+    name: gcm-redbook-ultra
     driver: bridge

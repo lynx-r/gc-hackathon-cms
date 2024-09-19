@@ -1,3 +1,41 @@
+# CMS для приложения Красная книга Москвы
+
+## Описание
+
+В этом репозитории находится код [StrAPI CMS](https://strapi.io) настроенный для работы с приложением [Красная книга (frontend)](https://github.com/lynx-r/gc-hackathon-redbook-frontend.git)
+
+## Подготовка к запуска
+
+Для запуска приложения нужно выполнить клон двух репозиториев:
+
+[Красная книга (frontend)](https://github.com/lynx-r/gc-hackathon-redbook-frontend.git)
+
+```bash
+git clone https://github.com/lynx-r/gc-hackathon-redbook-frontend.git
+```
+
+[Красная книга (CMS)](https://github.com/lynx-r/gc-hackathon-redbook-cms)
+
+```bash
+git clone https://github.com/lynx-r/gc-hackathon-redbook-cms.git
+```
+
+После клонирования репозиториев нужно перейти в репозиторий [Красная книга (CMS)](https://github.com/lynx-r/gc-hackathon-redbook-cms)
+
+```bash
+cd gc-hackathon-redbook-cms
+```
+
+## Запуск в Docker
+
+Для запуска в [Docker](https://www.docker.com/) нужно установить [Docker compose](https://docs.docker.com/compose/) и выполнить команду
+
+```bash
+docker-compose up -d
+```
+
+Либо аналог команды в вашей ОС.
+
 # 🚀 Getting started with Strapi
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.

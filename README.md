@@ -36,6 +36,16 @@ docker-compose up -d
 
 Либо аналог команды в вашей ОС.
 
+## Добавление новых животных
+
+Для добавления новых животных в CMS перейдите по адресу [http://localhost:1337/admin](http://localhost:1337/admin) и зарегистрируйтесь либо войдите в систему.
+
+На вкладке [Content Manager] выберите [Животные](http://localhost:1337/admin/content-manager/collection-types/api::animal.animal?page=1&pageSize=10&sort=name:ASC), добавьте и опубликуйте новую запись.
+
+Для доступа к разделу Животные перейдите в [Settings](http://localhost:1337/admin/settings/application-infos) -> [Roles](http://localhost:1337/admin/settings/users-permissions/roles) -> [Public](http://localhost:1337/admin/settings/users-permissions/roles/2), в блоке Permissions выберите Animals и выберите все права (`create, delete, find, findOne, update`). Это нужно для работы демо версии мобильного приложения.
+
+Коротко ознакомиться с работой с структурами данных CMS можно [здесь](https://docs.strapi.io/dev-docs/quick-start#-part-b-build-your-data-structure-with-the-content-type-builder). С добавлением контента [здесь](https://docs.strapi.io/dev-docs/quick-start#-part-d-add-content-to-your-strapi-cloud-project-with-the-content-manager).
+
 # 🚀 Getting started with Strapi
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.

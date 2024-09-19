@@ -26,6 +26,16 @@ git clone https://github.com/lynx-r/gc-hackathon-redbook-cms.git
 cd gc-hackathon-redbook-cms
 ```
 
+## Переменные окружения
+
+Для корректной работы приложения нужно создать файл `.env` в `gc-hackathon-redbook-cms`
+
+Самый простой способ, скопировать из .env.example
+
+```bash
+cp .env.example .env
+```
+
 ## Запуск в Docker
 
 Для запуска в [Docker](https://www.docker.com/) нужно установить [Docker compose](https://docs.docker.com/compose/) и выполнить команду
@@ -45,6 +55,14 @@ docker-compose up -d
 Для доступа к разделу Животные перейдите в [Settings](http://localhost:1337/admin/settings/application-infos) -> [Roles](http://localhost:1337/admin/settings/users-permissions/roles) -> [Public](http://localhost:1337/admin/settings/users-permissions/roles/2), в блоке Permissions выберите Animals и выберите все права (`create, delete, find, findOne, update`). Это нужно для работы демо версии мобильного приложения.
 
 Коротко ознакомиться с работой с структурами данных CMS можно [здесь](https://docs.strapi.io/dev-docs/quick-start#-part-b-build-your-data-structure-with-the-content-type-builder). С добавлением контента [здесь](https://docs.strapi.io/dev-docs/quick-start#-part-d-add-content-to-your-strapi-cloud-project-with-the-content-manager).
+
+## Web приложения
+
+После запуска системы в докере, веб приложение должно быть доступно по адресу [http://localhost:8081/](http://localhost:8081/)
+
+## База данных CMS
+
+База данных CMS доступна по адресу [http://localhost:9090](http://localhost:9090)
 
 # 🚀 Getting started with Strapi
 

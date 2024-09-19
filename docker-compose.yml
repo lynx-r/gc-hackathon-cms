@@ -3,7 +3,7 @@ services:
   frontend:
     container_name: gcm-redbook-ultra-frt
     build:
-      context: ../redbook-frontend
+      context: ../gc-hackathon-redbook-frontend
     ports:
       - "8081:80"
     networks:
